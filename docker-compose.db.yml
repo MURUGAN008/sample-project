@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  catalog-db:
+    image: mongo:6.0
+    container_name: catalog-db
+    command: mongod --wiredTigerCacheSizeGB 0.25
+    ports:
+      - "27017:27017"
+    volumes:
+      - catalog_mongo_data:/data/db
+
+  rating-db:
+    image: mongo:6.0
+    container_name: rating-db
+    command: mongod --wiredTigerCacheSizeGB 0.25
+    ports:
+      - "27019:27017"
+    volumes:
+      - rating_mongo_data:/data/db
+
+  order-db:
+    image: mongo:6.0
+    container_name: order-db
+    command: mongod --wiredTigerCacheSizeGB 0.25
+    ports:
+      - "27018:27017"
+    volumes:
+      - order_mongo_data:/data/db
+
+  notification-db:
+    image: mongo:6.0
+    container_name: notification-db
+    command: mongod --wiredTigerCacheSizeGB 0.25
+    ports:
+      - "27020:27017"
+    volumes:
+      - notification_mongo_data:/data/db
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: cakedelight-rabbitmq
+    ports:
+      - "5672:5672"   # AMQP Protocol
+      - "15672:15672" # Web Management Console
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+volumes:
+  catalog_mongo_data:
+  rating_mongo_data:
+  order_mongo_data:
+  notification_mongo_data:
+
+
