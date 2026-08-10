@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
-const GATEWAY_URL = 'http://localhost:5000';
+const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL ||
+  (typeof window !== 'undefined' && window.location.port === '30000'
+    ? `http://${window.location.hostname}:30500`
+    : 'http://localhost:5000');
+
+
 
 function App() {
   const [cakes, setCakes] = useState([]);
