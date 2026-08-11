@@ -158,6 +158,8 @@ function App() {
         setCheckoutMsg(`🎉 Order #${checkoutJson.data._id.substring(0, 8)} Completed! Notification sent to ${customerEmail}.`);
         setBasket([]);
         fetchNotifications();
+        setTimeout(fetchNotifications, 1500);
+        setTimeout(fetchNotifications, 3500);
       } else {
         alert(checkoutJson.message);
       }

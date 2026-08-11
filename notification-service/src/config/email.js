@@ -23,6 +23,8 @@ const initEmailTransporter = async () => {
                 host: 'smtp.ethereal.email',
                 port: 587,
                 secure: false,
+                connectionTimeout: 2000,
+                socketTimeout: 2000,
                 auth: {
                     user: testAccount.user,
                     pass: testAccount.pass
