@@ -5,7 +5,7 @@ const sampleCakes = [
     name: "Chocolate Truffle Delight",
     description: "Rich dark chocolate layer cake topped with ganache glaze",
     category: "Chocolate",
-    price: 24.99,
+    price: 499,
     stockQuantity: 15,
     imageUrl: "https://images.unsplash.com/photo-1578985545062-69928b1d9587"
   },
@@ -13,7 +13,7 @@ const sampleCakes = [
     name: "Red Velvet Dream",
     description: "Classic red velvet with silky cream cheese frosting",
     category: "Velvet",
-    price: 28.50,
+    price: 599,
     stockQuantity: 12,
     imageUrl: "https://images.unsplash.com/photo-1586788680434-30d324b2d46f"
   },
@@ -21,7 +21,7 @@ const sampleCakes = [
     name: "Strawberry Bliss",
     description: "Fresh farm strawberries with light vanilla sponge",
     category: "Fruit",
-    price: 22.00,
+    price: 449,
     stockQuantity: 20,
     imageUrl: "https://images.unsplash.com/photo-1565958011703-44f9829ba187"
   },
@@ -29,7 +29,7 @@ const sampleCakes = [
     name: "Mango Passion Crunch",
     description: "Tropical mango mousse with passion fruit gelatin glaze",
     category: "Fruit",
-    price: 26.00,
+    price: 549,
     stockQuantity: 8,
     imageUrl: "https://images.unsplash.com/photo-1535141192574-5d4897c13136"
   }

@@ -42,7 +42,7 @@ const connectRabbitMQConsumer = async () => {
 
                     const notificationMessage = emailResult.previewUrl
                         ? `Live Email Sent! Preview: ${emailResult.previewUrl}`
-                        : `Order confirmation notification sent to ${eventData.customerEmail} for Order #${eventData.orderId} (Total: $${Number(eventData.totalAmount).toFixed(2)})`;
+                        : `Order confirmation notification sent to ${eventData.customerEmail} for Order #${eventData.orderId} (Total: ₹${Number(eventData.totalAmount).toFixed(2)})`;
 
                     await Notification.create({
                         orderId: String(eventData.orderId),

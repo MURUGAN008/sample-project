@@ -13,6 +13,8 @@ function App() {
   const [ratings, setRatings] = useState({});
   const [categoryFilter, setCategoryFilter] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
   const [basket, setBasket] = useState([]);
   const savedUser = JSON.parse(localStorage.getItem('cake_user') || '{}');
   const [customerName, setCustomerName] = useState(savedUser.customerName || '');
@@ -37,6 +39,8 @@ function App() {
       let params = [];
       if (categoryFilter) params.push(`category=${categoryFilter}`);
       if (searchQuery) params.push(`name=${encodeURIComponent(searchQuery)}`);
+      if (minPrice) params.push(`minPrice=${minPrice}`);
+      if (maxPrice) params.push(`maxPrice=${maxPrice}`);
       if (params.length > 0) url += `?${params.join('&')}`;
 
       const res = await fetch(url);
@@ -82,7 +86,7 @@ function App() {
   useEffect(() => {
     fetchCakes();
     fetchNotifications();
-  }, [categoryFilter, searchQuery]);
+  }, [categoryFilter, searchQuery, minPrice, maxPrice]);
 
   // Basket Management
   const addToBasket = (cake) => {
@@ -99,6 +103,16 @@ function App() {
 
   const removeFromBasket = (cakeId) => {
     setBasket(prev => prev.filter(item => item.cakeId !== cakeId));
+  };
+
+  const updateQuantity = (cakeId, delta) => {
+    setBasket(prev => prev.map(item => {
+      if (item.cakeId === cakeId) {
+        const newQty = item.quantity + delta;
+        return newQty >= 1 ? { ...item, quantity: newQty } : item;
+      }
+      return item;
+    }));
   };
 
   const calculateTotal = () => {
@@ -198,7 +212,7 @@ function App() {
             </div>
           )}
           <div className="cart-badge">
-            🛒 Cart: <strong>{basket.reduce((sum, i) => sum + i.quantity, 0)} items</strong> (${calculateTotal()})
+            🛒 Cart: <strong>{basket.reduce((sum, i) => sum + i.quantity, 0)} items</strong> (₹{calculateTotal()})
           </div>
         </div>
       </header>
@@ -230,6 +244,26 @@ function App() {
                 </button>
               ))}
             </div>
+            <div className="price-filter">
+              <span>💰 Price:</span>
+              <input
+                type="number"
+                placeholder="Min"
+                value={minPrice}
+                onChange={(e) => setMinPrice(e.target.value)}
+                className="price-input"
+                min="0"
+              />
+              <span>—</span>
+              <input
+                type="number"
+                placeholder="Max"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(e.target.value)}
+                className="price-input"
+                min="0"
+              />
+            </div>
           </div>
 
           {/* Cakes Grid */}
@@ -259,7 +293,7 @@ function App() {
                       </div>
 
                       <div className="card-footer">
-                        <span className="price">${cake.price.toFixed(2)}</span>
+                        <span className="price">₹{cake.price.toFixed(2)}</span>
                         <button className="btn-add" onClick={() => addToBasket(cake)}>Add to Cart</button>
                       </div>
                     </div>
@@ -284,14 +318,19 @@ function App() {
                   <div key={item.cakeId} className="cart-item">
                     <div>
                       <strong>{item.name}</strong>
-                      <div>${item.price} x {item.quantity} = ${(item.price * item.quantity).toFixed(2)}</div>
+                      <div>₹{item.price} x {item.quantity} = ₹{(item.price * item.quantity).toFixed(2)}</div>
+                      <div className="qty-controls">
+                        <button className="btn-qty" onClick={() => updateQuantity(item.cakeId, -1)} disabled={item.quantity <= 1}>−</button>
+                        <span className="qty-display">{item.quantity}</span>
+                        <button className="btn-qty" onClick={() => updateQuantity(item.cakeId, +1)}>+</button>
+                      </div>
                     </div>
                     <button className="btn-remove" onClick={() => removeFromBasket(item.cakeId)}>✕</button>
                   </div>
                 ))}
                 <div className="cart-total">
                   <span>Total Amount:</span>
-                  <strong>${calculateTotal()}</strong>
+                  <strong>₹{calculateTotal()}</strong>
                 </div>
 
                 {/* Checkout Form */}

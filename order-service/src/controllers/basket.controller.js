@@ -84,8 +84,50 @@ const removeItemFromBasket = async (req, res) => {
     }
 };
 
+// PUT /api/basket/items - Update item quantity in basket
+const updateItemQuantity = async (req, res) => {
+    try {
+        const { customerId, cakeId, quantity } = req.body;
+
+        if (!customerId || !cakeId || quantity === undefined) {
+            return res.status(400).json({
+                success: false,
+                message: "Required fields missing: customerId, cakeId, quantity"
+            });
+        }
+
+        if (Number(quantity) < 1) {
+            return res.status(400).json({
+                success: false,
+                message: "Quantity must be at least 1. Use DELETE to remove items."
+            });
+        }
+
+        let basket = await Basket.findOne({ customerId });
+        if (!basket) {
+            return res.status(404).json({ success: false, message: "Basket not found" });
+        }
+
+        const itemIndex = basket.items.findIndex(item => item.cakeId === cakeId);
+        if (itemIndex === -1) {
+            return res.status(404).json({ success: false, message: "Item not found in basket" });
+        }
+
+        basket.items[itemIndex].quantity = Number(quantity);
+        basket.totalAmount = calculateTotal(basket.items);
+        basket.updatedAt = new Date();
+
+        await basket.save();
+        return res.status(200).json({ success: true, data: basket });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, message: "Internal Server Error", error: error.message });
+    }
+};
+
 module.exports = {
     getBasket,
     addItemToBasket,
+    updateItemQuantity,
     removeItemFromBasket
 };
