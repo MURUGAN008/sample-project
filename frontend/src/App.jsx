@@ -160,6 +160,7 @@ function App() {
         fetchNotifications();
         setTimeout(fetchNotifications, 1500);
         setTimeout(fetchNotifications, 3500);
+        setTimeout(fetchNotifications, 7500);
       } else {
         alert(checkoutJson.message);
       }
