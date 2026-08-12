@@ -237,7 +237,7 @@ function App() {
               className="search-input"
             />
             <div className="category-buttons">
-              {['', 'Chocolate', 'Velvet', 'Fruit'].map(cat => (
+              {['', 'Chocolate', 'Velvet', 'Fruit', 'Cheesecake', 'Vanilla', 'Specialty'].map(cat => (
                 <button
                   key={cat}
                   className={`btn-category ${categoryFilter === cat ? 'active' : ''}`}
